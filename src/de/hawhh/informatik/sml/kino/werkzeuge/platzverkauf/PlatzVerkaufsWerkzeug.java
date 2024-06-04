@@ -73,7 +73,7 @@ public class PlatzVerkaufsWerkzeug {
 			{
 				verkaufePlaetze(_vorstellung);
 			}
-			aktualisierePlatzplan();
+//			aktualisierePlatzplan();
 		});
 
 //        _ui.getStornierenButton().setOnAction(new EventHandler<ActionEvent>()

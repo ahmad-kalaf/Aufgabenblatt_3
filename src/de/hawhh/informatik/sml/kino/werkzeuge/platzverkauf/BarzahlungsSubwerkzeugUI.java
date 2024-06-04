@@ -23,7 +23,6 @@ import javafx.stage.StageStyle;
 
 public class BarzahlungsSubwerkzeugUI {
 
-	private Vorstellung _vorstellung;
 	private int _zuZahlen;
 	private Button _okButton;
 	private Button _abbrechenButton;
@@ -32,8 +31,7 @@ public class BarzahlungsSubwerkzeugUI {
 	private Stage dialog;
 	private boolean _ownerGesetzt;
 
-	public BarzahlungsSubwerkzeugUI(Vorstellung v) {
-		_vorstellung = v;
+	public BarzahlungsSubwerkzeugUI() {
 
 		Font textstyle = Font.font("Verdana", FontWeight.LIGHT, FontPosture.REGULAR, 13);
 		dialog = new Stage();
@@ -104,5 +102,6 @@ public class BarzahlungsSubwerkzeugUI {
 	public Stage getUIStage() {
 		return dialog;
 	}
+	
 
 }

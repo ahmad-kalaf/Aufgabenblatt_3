@@ -3,6 +3,7 @@ package de.hawhh.informatik.sml.kino.werkzeuge.platzverkauf;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 /**
@@ -22,7 +23,7 @@ public class BarzahlungsSubwerkzeug
 	{
 		_bezahlungErfolgreich = false;
 		_okGedrueckt = false;
-		_ui = new BarzahlungsSubwerkzeugUI(v);
+		_ui = new BarzahlungsSubwerkzeugUI();
 		_plan = plan;
 		_vorstellung = v;
 		registriereUIAktionen();
@@ -48,26 +49,32 @@ public class BarzahlungsSubwerkzeug
 	 */
 	private void registriereUIAktionen()
 	{
+		_ui.getOkButton().setDisable(true);
 		_ui.getAbbrechenButton()
 				.setOnAction((action) -> _ui.getUIStage().close());
-		_ui.getTextField().textProperty().addListener((a, b, c) -> {
-			pruefeBezahlvorgang();
-			if(pruefeEingabe())
+		_ui.getTextField().setOnKeyPressed(event -> {
+			if(event.getCode() == KeyCode.ENTER)
 			{
-				int zuZahlen = berechnePreisFuerAusgewaehlte();
-				int rueckgeld = berechneRueckgeld() >= 0 ? berechneRueckgeld()
-						: 0;
-				int gezahlt = _ui.getTextField().getText().isBlank() ? 0
-						: Integer.parseInt(_ui.getTextField().getText());
-				_ui.getLabelText()
-						.setText("ZEITSTEMPEL: " + _zeitstempel
-								+ _vorstellungsinfo + "RECHNUNGSDETAILS"
-								+ "\nZu Zahlen: " + zuZahlen + " Eurocent"
-								+ "\nGezahlt: " + gezahlt + " Eurocent"
-								+ "\nRückgeld: " + rueckgeld + " Eurocent");
-			} else
-			{
-				_ui.getLabelText().setText("Fehler in Eingabe");
+				pruefeBezahlvorgang();
+				if(pruefeEingabe() && !_ui.getTextField().getText().isBlank() && rechnePreisInEuro() > 0)
+				{
+					double zuZahlen = berechnePreisFuerAusgewaehlte();
+					double rueckgeld = berechneRueckgeld() >= 0 ? berechneRueckgeld()
+							: 0;
+					double gezahlt = _ui.getTextField().getText().isBlank() ? 0
+							: rechnePreisInEuro();
+					_ui.getLabelText()
+							.setText("ZEITSTEMPEL: " + _zeitstempel
+									+ _vorstellungsinfo + "RECHNUNGSDETAILS"
+									+ "\nZu Zahlen: " + zuZahlen + " Eurocent"
+									+ "\nGezahlt: " + gezahlt + " Eurocent"
+									+ "\nRückgeld: " + rueckgeld + " Eurocent");
+					_ui.getOkButton().setDisable(false);
+				} else
+				{
+					_ui.getLabelText().setText("Fehler in Eingabe");
+					_ui.getOkButton().setDisable(true);
+				}
 			}
 		});
 		_ui.getOkButton().setOnAction(action -> {
@@ -87,32 +94,36 @@ public class BarzahlungsSubwerkzeug
 		}
 	}
 
-	private int berechneRueckgeld()
+	private double berechneRueckgeld()
 	{
 		if(_ui.getTextField().getText().isBlank())
 		{
 			return 0;
 		}
-		return Integer.parseInt(_ui.getTextField().getText())
+		return rechnePreisInEuro()
 				- berechnePreisFuerAusgewaehlte();
 	}
 
-	private int berechnePreisFuerAusgewaehlte()
+	private double berechnePreisFuerAusgewaehlte()
 	{
-		return _plan.getAusgewaehltePlaetze().size() * _vorstellung.getPreis();
+//		return _plan.getAusgewaehltePlaetze().size() * _vorstellung.getPreis();
+		return (double)_vorstellung.getPreisFuerPlaetze(_plan.getAusgewaehltePlaetze()) / 100.0;
 	}
 
 	private boolean pruefeEingabe()
 	{
 		String value = _ui.getTextField().getText();
-		try 
-		{
-			Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			_ui.getLabelText().setText("Fehler in Eingabe: Input ist zu groß");
-		}
 		
-		return value != null && value.chars().allMatch(i -> i >= 48 && i <= 57);
+		return value != null && value.matches("-?\\d+(\\.\\d+)?") || value.matches("[1-9]") || value.isBlank();
+	}
+	
+	private double rechnePreisInEuro()
+	{
+		if(pruefeEingabe())
+		{
+			return Double.valueOf(_ui.getTextField().getText());
+		}
+		return 0;
 	}
 
 	public void setInfotextAmAnfang()
