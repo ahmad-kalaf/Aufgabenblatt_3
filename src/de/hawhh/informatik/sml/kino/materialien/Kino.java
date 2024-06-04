@@ -1,6 +1,7 @@
 package de.hawhh.informatik.sml.kino.materialien;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -40,12 +41,14 @@ public class Kino
         _kinosaele = new ArrayList<Kinosaal>(saele.length);
         _tagesplaene = new TreeMap<Datum, Tagesplan>();
 
-        for (Kinosaal saal : saele)
-        {
-            assert saal != null
-                : "Vorbedingung verletzt: saele enthaelt keine Nullpointer";
-            _kinosaele.add(saal);
-        }
+//        for (Kinosaal saal : saele)
+//        {
+//            assert saal != null
+//                : "Vorbedingung verletzt: saele enthaelt keine Nullpointer";
+//            _kinosaele.add(saal);
+//        }
+        Arrays.stream(saele).allMatch(saal -> saal != null);
+        Arrays.stream(saele).forEach(saal -> _kinosaele.add(saal));
 
         for (Vorstellung vorstellung : vorstellungen)
         {

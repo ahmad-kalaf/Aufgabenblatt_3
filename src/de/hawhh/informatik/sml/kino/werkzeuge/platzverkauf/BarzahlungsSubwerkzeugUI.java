@@ -40,18 +40,8 @@ public class BarzahlungsSubwerkzeugUI {
 		dialog.initModality(Modality.WINDOW_MODAL); // Modalität setzen
 		dialog.initStyle(StageStyle.UTILITY);
 		dialog.setTitle("Barzahlung");
-
-		LocalDateTime jetzt = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		String zeitstempel = jetzt.format(formatter);
-		Text textEins = new Text("Datum und Uhrzeit: ");
-		textEins.setFont(textstyle);
-		textEins.setFill(Color.BLUE);
-		Text textZwei = new Text(zeitstempel);
-		textZwei.setFont(textstyle);
-		textZwei.setFill(Color.BLUE);
-		HBox datumUhrzeit = new HBox(textEins, textZwei);
-		
+		dialog.setMinWidth(300);
+		dialog.setMinHeight(350);
 
 		_label = new Label();
 		_label.setFont(textstyle);
@@ -66,10 +56,6 @@ public class BarzahlungsSubwerkzeugUI {
 		dialogLayout.setPadding(new Insets(10));
 		dialogLayout.setHgap(10);
 		dialogLayout.setVgap(10);
-
-		// Datum und Uhrzeit
-		dialogLayout.add(datumUhrzeit, 0, 0);
-		GridPane.setHalignment(datumUhrzeit, HPos.LEFT);
 
 		// Text und Textfeld in der Mitte
 		dialogLayout.add(_label, 0, 1);

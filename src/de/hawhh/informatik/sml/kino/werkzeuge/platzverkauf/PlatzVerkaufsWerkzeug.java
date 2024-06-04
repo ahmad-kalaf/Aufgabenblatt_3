@@ -66,9 +66,14 @@ public class PlatzVerkaufsWerkzeug {
 			_barzahlungssubwerkzeug = new BarzahlungsSubwerkzeug(_vorstellung, _ui.getPlatzplan());
 			// Referenz auf oberste / primäre Stage
 			Stage primaryStage = (Stage) ((Node) action.getSource()).getScene().getWindow();
-			_barzahlungssubwerkzeug.setZuZahlenderBetragAmAnfang();
+			_barzahlungssubwerkzeug.setInfotextAmAnfang();
 
 			_barzahlungssubwerkzeug.zeigeBarzahlungsFenster(primaryStage);
+			if(_barzahlungssubwerkzeug.getOkGedrueckt())
+			{
+				verkaufePlaetze(_vorstellung);
+			}
+			aktualisierePlatzplan();
 		});
 
 //        _ui.getStornierenButton().setOnAction(new EventHandler<ActionEvent>()
