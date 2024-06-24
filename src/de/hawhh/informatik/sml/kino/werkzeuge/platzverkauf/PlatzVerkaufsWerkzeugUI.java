@@ -43,15 +43,6 @@ class PlatzVerkaufsWerkzeugUI {
 		_platzplan = new Platzplan();
 		final ScrollPane scrPane = new ScrollPane();
 		scrPane.setContent(_platzplan);
-//        scrPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>()
-//        {
-//            public void changed(ObservableValue<? extends Bounds> arg0, Bounds arg1, Bounds arg2)
-//            {
-//                Node content = scrPane.getContent();
-//                scrPane.setFitToWidth(content.prefWidth(-1) < arg2.getWidth());
-//                scrPane.setFitToHeight(content.prefHeight(-1) < arg2.getHeight());
-//            }
-//        });
 		scrPane.viewportBoundsProperty().addListener((arg0, arg1, arg2) -> {
 			Node content = scrPane.getContent();
 			scrPane.setFitToWidth(content.prefWidth(-1) < arg2.getWidth());

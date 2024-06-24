@@ -271,4 +271,10 @@ class Platzplan extends GridPane
         // repaint();
     }
 
+    public void markierePlatzAlsSelektiert(Platz platz)
+    {
+        assert platz != null : "Vorbedingung verletzt: platz != null";
+        _buttons[platz.getReihenNr()][platz.getSitzNr()].setAusgewaehlt(true);
+        // repaint();
+    }
 }

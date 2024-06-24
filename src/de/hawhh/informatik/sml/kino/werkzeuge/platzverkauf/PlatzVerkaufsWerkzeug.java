@@ -4,6 +4,7 @@ import java.util.Set;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import de.hawhh.informatik.sml.kino.fachwerte.Geldbetrag;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
@@ -53,14 +54,6 @@ public class PlatzVerkaufsWerkzeug {
 	 */
 	private void registriereUIAktionen() {
 
-//        _ui.getVerkaufenButton().setOnAction(new EventHandler<ActionEvent>()
-//        {
-//            @Override
-//            public void handle(ActionEvent ae)
-//            {
-//                verkaufePlaetze(_vorstellung);
-//            }
-//        });
 		_ui.getVerkaufenButton().setOnAction(action -> {
 
 			_barzahlungssubwerkzeug = new BarzahlungsSubwerkzeug(_vorstellung, _ui.getPlatzplan());
@@ -73,27 +66,9 @@ public class PlatzVerkaufsWerkzeug {
 			{
 				verkaufePlaetze(_vorstellung);
 			}
-//			aktualisierePlatzplan();
 		});
 
-//        _ui.getStornierenButton().setOnAction(new EventHandler<ActionEvent>()
-//        {
-//            @Override
-//            public void handle(ActionEvent ae)
-//            {
-//                stornierePlaetze(_vorstellung);
-//            }
-//        });
 		_ui.getStornierenButton().setOnAction(action -> stornierePlaetze(_vorstellung));
-
-//        _ui.getPlatzplan().addPlatzSelectionListener(new PlatzSelectionListener()
-//        {
-//            @Override
-//            public void auswahlGeaendert(PlatzSelectionEvent event)
-//            {
-//                reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
-//            }
-//        });
 		_ui.getPlatzplan()
 				.addPlatzSelectionListener(event -> reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze()));
 	}
@@ -107,6 +82,9 @@ public class PlatzVerkaufsWerkzeug {
 		_ui.getVerkaufenButton().setDisable(!istVerkaufenMoeglich(plaetze));
 		_ui.getStornierenButton().setDisable(!istStornierenMoeglich(plaetze));
 		aktualisierePreisanzeige(plaetze);
+		if(_vorstellung != null) {
+			_vorstellung.selektierePlaetze(plaetze);
+		}
 	}
 
 	/**
@@ -115,11 +93,12 @@ public class PlatzVerkaufsWerkzeug {
 	private void aktualisierePreisanzeige(Set<Platz> plaetze) {
 
 		if (istVerkaufenMoeglich(plaetze)) {
-			int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+			Geldbetrag preis = _vorstellung.getPreisFuerPlaetze(plaetze); // TODO Geldbetrag benutzen
 			_ui.getPreisLabel().setText("Gesamtpreis: " + preis + " Eurocent");
 		} else {
 			_ui.getPreisLabel().setText("Gesamtpreis:");
 		}
+		
 	}
 
 	/**
@@ -152,13 +131,20 @@ public class PlatzVerkaufsWerkzeug {
 	private void aktualisierePlatzplan() {
 		if (_vorstellung != null) {
 			Kinosaal saal = _vorstellung.getKinosaal();
+			Geldbetrag preis = Geldbetrag.getGeldbetrag(0);
 			_ui.getPlatzplan().setAnzahlPlaetze(saal.getAnzahlReihen(), saal.getAnzahlSitzeProReihe());
 
 			for (Platz platz : saal.getPlaetze()) {
 				if (_vorstellung.istPlatzVerkauft(platz)) {
 					_ui.getPlatzplan().markierePlatzAlsVerkauft(platz);
 				}
+				if(_vorstellung.istPlatzSelektiert(platz)) {
+					_ui.getPlatzplan().markierePlatzAlsSelektiert(platz);
+					preis = preis.addiere(_vorstellung.getPreis());
+					
+				}
 			}
+			_ui.getPreisLabel().setText("Gesamtpreis: " + preis + " Eurocent");
 		} else {
 			_ui.getPlatzplan().setAnzahlPlaetze(0, 0);
 		}
