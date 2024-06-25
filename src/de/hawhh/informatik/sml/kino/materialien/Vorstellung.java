@@ -16,7 +16,8 @@ import de.hawhh.informatik.sml.kino.fachwerte.Uhrzeit;
  * @author SE2-Team Uni HH, PM2-Team
  * @version SoSe 2024
  */
-public class Vorstellung {
+public class Vorstellung
+{
 	private Kinosaal _kinosaal;
 	private Film _film;
 	private Uhrzeit _anfangszeit;
@@ -24,7 +25,6 @@ public class Vorstellung {
 	private Datum _datum;
 	private Geldbetrag _preis; // TODO Geldbetrag benutzen
 	private boolean[][] _verkauft;
-	 // xxxxxxxxxxx
 	private boolean[][] _selektiert;
 	private int _anzahlVerkauftePlaetze;
 
@@ -52,10 +52,13 @@ public class Vorstellung {
 	 * @ensure getDatum() == datum
 	 * @ensure getPreis() == preis
 	 */
-	public Vorstellung(Kinosaal kinosaal, Film film, Uhrzeit anfangszeit, Uhrzeit endzeit, Datum datum, int preis) {
+	public Vorstellung(Kinosaal kinosaal, Film film, Uhrzeit anfangszeit,
+			Uhrzeit endzeit, Datum datum, int preis)
+	{
 		assert kinosaal != null : "Vorbedingung verletzt: saal != null";
 		assert film != null : "Vorbedingung verletzt: film != null";
-		assert anfangszeit != null : "Vorbedingung verletzt: anfangszeit != null";
+		assert anfangszeit != null
+				: "Vorbedingung verletzt: anfangszeit != null";
 		assert endzeit != null : "Vorbedingung verletzt: endzeit != null";
 		assert datum != null : "Vorbedingung verletzt: datum != null";
 		assert preis >= 0 : "Vorbedingung verletzt: preis >= 0";
@@ -66,9 +69,10 @@ public class Vorstellung {
 		_endzeit = endzeit;
 		_datum = datum;
 		_preis = Geldbetrag.getGeldbetrag(preis);
-		_verkauft = new boolean[kinosaal.getAnzahlReihen()][kinosaal.getAnzahlSitzeProReihe()];
-		// xxxxxxxxxxxxx
-		_selektiert = new boolean[kinosaal.getAnzahlReihen()][kinosaal.getAnzahlSitzeProReihe()];
+		_verkauft = new boolean[kinosaal.getAnzahlReihen()][kinosaal
+				.getAnzahlSitzeProReihe()];
+		_selektiert = new boolean[kinosaal.getAnzahlReihen()][kinosaal
+				.getAnzahlSitzeProReihe()];
 		_anzahlVerkauftePlaetze = 0;
 	}
 
@@ -77,7 +81,8 @@ public class Vorstellung {
 	 * 
 	 * @ensure result != null
 	 */
-	public Kinosaal getKinosaal() {
+	public Kinosaal getKinosaal()
+	{
 		return _kinosaal;
 	}
 
@@ -86,7 +91,8 @@ public class Vorstellung {
 	 * 
 	 * @ensure result != null
 	 */
-	public Film getFilm() {
+	public Film getFilm()
+	{
 		return _film;
 	}
 
@@ -95,7 +101,8 @@ public class Vorstellung {
 	 * 
 	 * @ensure result != null
 	 */
-	public Uhrzeit getAnfangszeit() {
+	public Uhrzeit getAnfangszeit()
+	{
 		return _anfangszeit;
 	}
 
@@ -104,7 +111,8 @@ public class Vorstellung {
 	 * 
 	 * @ensure result != null
 	 */
-	public Uhrzeit getEndzeit() {
+	public Uhrzeit getEndzeit()
+	{
 		return _endzeit;
 	}
 
@@ -113,7 +121,8 @@ public class Vorstellung {
 	 * 
 	 * @ensure result != null
 	 */
-	public Datum getDatum() {
+	public Datum getDatum()
+	{
 		return _datum;
 	}
 
@@ -122,7 +131,8 @@ public class Vorstellung {
 	 * 
 	 * @ensure result > 0
 	 */
-	public Geldbetrag getPreis() {
+	public Geldbetrag getPreis()
+	{
 		return _preis;
 	}
 
@@ -136,24 +146,28 @@ public class Vorstellung {
 	 * 
 	 * @require platz != null
 	 */
-	public boolean hatPlatz(Platz platz) {
+	public boolean hatPlatz(Platz platz)
+	{
 		assert platz != null : "Vorbedingung verletzt: platz != null";
 
 		return _kinosaal.hatPlatz(platz);
 	}
 
 	/**
-	 * Prüft, ob alle angegebenen Sitzplätze in dieser Vorstellung vorhanden sind.
+	 * Prüft, ob alle angegebenen Sitzplätze in dieser Vorstellung vorhanden
+	 * sind.
 	 * 
 	 * @param plaetze die Sitzplätze.
 	 * 
 	 * @return true, falls alle Plätze existieren, false sonst.
 	 */
-	public boolean hatPlaetze(Set<Platz> plaetze) {
+	public boolean hatPlaetze(Set<Platz> plaetze)
+	{
 		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
 
 		boolean result = true;
-		for (Platz p : plaetze) {
+		for(Platz p : plaetze)
+		{
 			result &= hatPlatz(p);
 		}
 		return result;
@@ -169,9 +183,11 @@ public class Vorstellung {
 	 * @require plaetze != null
 	 * @require hatPlaetze(plaetze)
 	 */
-	public Geldbetrag getPreisFuerPlaetze(Set<Platz> plaetze) {
+	public Geldbetrag getPreisFuerPlaetze(Set<Platz> plaetze)
+	{
 		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
-		assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
+		assert hatPlaetze(plaetze)
+				: "Vorbedingung verletzt: hatPlaetze(plaetze)";
 
 		return _preis.multipliziereMit(plaetze.size());
 	}
@@ -181,13 +197,14 @@ public class Vorstellung {
 	 * 
 	 * @param platz der Sitzplatz.
 	 * 
-	 * @return <code>true</code>, falls der Platz verkauft ist, <code>false</code>
-	 *         sonst.
+	 * @return <code>true</code>, falls der Platz verkauft ist,
+	 *         <code>false</code> sonst.
 	 * 
 	 * @require platz != null
 	 * @require hatPlatz(platz)
 	 */
-	public boolean istPlatzVerkauft(Platz platz) {
+	public boolean istPlatzVerkauft(Platz platz)
+	{
 		assert platz != null : "Vorbedingung verletzt: platz != null";
 		assert hatPlatz(platz) : "Vorbedingung verletzt: hatPlatz(platz)";
 
@@ -205,10 +222,12 @@ public class Vorstellung {
 	 * 
 	 * @ensure istPlatzVerkauft(reihe, sitz)
 	 */
-	public void verkaufePlatz(Platz platz) {
+	public void verkaufePlatz(Platz platz)
+	{
 		assert platz != null : "Vorbedingung verletzt: platz != null";
 		assert hatPlatz(platz) : "Vorbedingung verletzt: hatPlatz(platz)";
-		assert !istPlatzVerkauft(platz) : "Vorbedingung verletzt: !istPlatzVerkauft(platz)";
+		assert !istPlatzVerkauft(platz)
+				: "Vorbedingung verletzt: !istPlatzVerkauft(platz)";
 
 		_verkauft[platz.getReihenNr()][platz.getSitzNr()] = true;
 		_anzahlVerkauftePlaetze++;
@@ -225,10 +244,12 @@ public class Vorstellung {
 	 * 
 	 * @ensure !istPlatzVerkauft(reihe, sitz)
 	 */
-	public void stornierePlatz(Platz platz) {
+	public void stornierePlatz(Platz platz)
+	{
 		assert platz != null : "Vorbedingung verletzt: platz != null";
 		assert hatPlatz(platz) : "Vorbedingung verletzt: hatPlatz(platz)";
-		assert istPlatzVerkauft(platz) : "Vorbedingung verletzt: istPlatzVerkauft(platz)";
+		assert istPlatzVerkauft(platz)
+				: "Vorbedingung verletzt: istPlatzVerkauft(platz)";
 
 		_verkauft[platz.getReihenNr()][platz.getSitzNr()] = false;
 		_anzahlVerkauftePlaetze--;
@@ -237,7 +258,8 @@ public class Vorstellung {
 	/**
 	 * Gibt die Anzahl verkaufter Plätze zurück.
 	 */
-	public int getAnzahlVerkauftePlaetze() {
+	public int getAnzahlVerkauftePlaetze()
+	{
 		return _anzahlVerkauftePlaetze;
 	}
 
@@ -250,13 +272,18 @@ public class Vorstellung {
 	 * 
 	 * @ensure alle angegebenen Plätze sind verkauft
 	 */
-	public void verkaufePlaetze(Set<Platz> plaetze) {
+	public void verkaufePlaetze(Set<Platz> plaetze)
+	{
 		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
-		assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
-		assert sindVerkaufbar(plaetze) : "Vorbedingung verletzt: sindVerkaufbar(plaetze)";
+		assert hatPlaetze(plaetze)
+				: "Vorbedingung verletzt: hatPlaetze(plaetze)";
+		assert sindVerkaufbar(plaetze)
+				: "Vorbedingung verletzt: sindVerkaufbar(plaetze)";
 
-		for (Platz platz : plaetze) {
+		for(Platz platz : plaetze)
+		{
 			verkaufePlatz(platz);
+			deselektiere(platz);
 		}
 	}
 
@@ -269,12 +296,15 @@ public class Vorstellung {
 	 * @require plaetze != null
 	 * @require hatPlaetze(plaetze)
 	 */
-	public boolean sindVerkaufbar(Set<Platz> plaetze) {
+	public boolean sindVerkaufbar(Set<Platz> plaetze)
+	{
 		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
-		assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
+		assert hatPlaetze(plaetze)
+				: "Vorbedingung verletzt: hatPlaetze(plaetze)";
 
 		boolean result = true;
-		for (Platz platz : plaetze) {
+		for(Platz platz : plaetze)
+		{
 			result &= !istPlatzVerkauft(platz);
 		}
 		return result;
@@ -289,60 +319,90 @@ public class Vorstellung {
 	 * 
 	 * @ensure alle angegebenen Plätze sind storniert
 	 */
-	public void stornierePlaetze(Set<Platz> plaetze) {
+	public void stornierePlaetze(Set<Platz> plaetze)
+	{
 		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
-		assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
-		assert sindStornierbar(plaetze) : "Vorbedingung verletzt: sindStornierbar(plaetze)";
+		assert hatPlaetze(plaetze)
+				: "Vorbedingung verletzt: hatPlaetze(plaetze)";
+		assert sindStornierbar(plaetze)
+				: "Vorbedingung verletzt: sindStornierbar(plaetze)";
 
-		for (Platz platz : plaetze) {
+		for(Platz platz : plaetze)
+		{
 			stornierePlatz(platz);
 		}
 	}
 
 	/**
-	 * Prüft, ob die gegebenen Plätze alle stornierbar sind. Dafür wird geschaut, ob
-	 * jeder gegebene Platz verkauft ist.
+	 * Prüft, ob die gegebenen Plätze alle stornierbar sind. Dafür wird
+	 * geschaut, ob jeder gegebene Platz verkauft ist.
 	 * 
 	 * Liefert true, wenn alle Plätze stornierbar sind, sonst false.
 	 * 
 	 * @require plaetze != null
 	 * @require hatPlaetze(plaetze)
 	 */
-	public boolean sindStornierbar(Set<Platz> plaetze) {
+	public boolean sindStornierbar(Set<Platz> plaetze)
+	{
 		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
-		assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
+		assert hatPlaetze(plaetze)
+				: "Vorbedingung verletzt: hatPlaetze(plaetze)";
 
 		boolean result = true;
-		for (Platz platz : plaetze) {
+		for(Platz platz : plaetze)
+		{
 			result &= istPlatzVerkauft(platz);
 		}
 		return result;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Vorstellung: " + _anfangszeit + ", " + _kinosaal + ", " + _film;
 	}
-	
-	public void selektierePlatz(Platz platz) {
+
+	public void selektierePlatz(Platz platz)
+	{
 		assert platz != null : "Vorbedingung verletzt: platz != null";
 		assert hatPlatz(platz) : "Vorbedingung verletzt: hatPlatz(platz)";
-		assert !istPlatzVerkauft(platz) : "Vorbedingung verletzt: !istPlatzVerkauft(platz)";
+		assert !istPlatzVerkauft(platz)
+				: "Vorbedingung verletzt: !istPlatzVerkauft(platz)";
 
 		_selektiert[platz.getReihenNr()][platz.getSitzNr()] = true;
 	}
-	
-	public void selektierePlaetze(Set<Platz> plaetze) {
-		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
-		assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
-		assert sindVerkaufbar(plaetze) : "Vorbedingung verletzt: sindVerkaufbar(plaetze)";
 
-		for (Platz platz : plaetze) {
+	public void selektierePlaetze(Set<Platz> plaetze)
+	{
+		assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
+		assert hatPlaetze(plaetze)
+				: "Vorbedingung verletzt: hatPlaetze(plaetze)";
+		assert sindVerkaufbar(plaetze)
+				: "Vorbedingung verletzt: sindVerkaufbar(plaetze)";
+
+		for(Platz platz : plaetze)
+		{
 			selektierePlatz(platz);
 		}
 	}
-	
-	public boolean istPlatzSelektiert(Platz platz) {
+
+	public void deselektiere(Platz platz)
+	{
+		assert platz != null : "Vorbedingung verletzt: platz != null";
+		assert hatPlatz(platz) : "Vorbedingung verletzt: hatPlatz(platz)";
+		assert !istPlatzVerkauft(platz)
+				: "Vorbedingung verletzt: !istPlatzVerkauft(platz)";
+
+		_selektiert[platz.getReihenNr()][platz.getSitzNr()] = false;
+	}
+
+	public boolean[][] getSelektierte()
+	{
+		return _selektiert;
+	}
+
+	public boolean istPlatzSelektiert(Platz platz)
+	{
 		assert platz != null : "Vorbedingung verletzt: platz != null";
 		assert hatPlatz(platz) : "Vorbedingung verletzt: hatPlatz(platz)";
 

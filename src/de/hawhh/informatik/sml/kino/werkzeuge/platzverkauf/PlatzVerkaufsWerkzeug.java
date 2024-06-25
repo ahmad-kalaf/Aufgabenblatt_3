@@ -1,5 +1,6 @@
 package de.hawhh.informatik.sml.kino.werkzeuge.platzverkauf;
 
+import java.util.HashSet;
 import java.util.Set;
 import javafx.scene.layout.Pane;
 import javafx.scene.Node;
@@ -82,9 +83,6 @@ public class PlatzVerkaufsWerkzeug {
 		_ui.getVerkaufenButton().setDisable(!istVerkaufenMoeglich(plaetze));
 		_ui.getStornierenButton().setDisable(!istStornierenMoeglich(plaetze));
 		aktualisierePreisanzeige(plaetze);
-		if(_vorstellung != null) {
-			_vorstellung.selektierePlaetze(plaetze);
-		}
 	}
 
 	/**
@@ -131,23 +129,25 @@ public class PlatzVerkaufsWerkzeug {
 	private void aktualisierePlatzplan() {
 		if (_vorstellung != null) {
 			Kinosaal saal = _vorstellung.getKinosaal();
-			Geldbetrag preis = Geldbetrag.getGeldbetrag(0);
-			_ui.getPlatzplan().setAnzahlPlaetze(saal.getAnzahlReihen(), saal.getAnzahlSitzeProReihe());
-
+			_ui.getPlatzplan().setAnzahlPlaetze(saal.getAnzahlReihen(), saal.getAnzahlSitzeProReihe(), _vorstellung);
+			Set<Platz> selektierte = new HashSet<Platz>();
 			for (Platz platz : saal.getPlaetze()) {
 				if (_vorstellung.istPlatzVerkauft(platz)) {
 					_ui.getPlatzplan().markierePlatzAlsVerkauft(platz);
 				}
+
 				if(_vorstellung.istPlatzSelektiert(platz)) {
-					_ui.getPlatzplan().markierePlatzAlsSelektiert(platz);
-					preis = preis.addiere(_vorstellung.getPreis());
-					
+					_ui.getPlatzplan().auswahlHinzufuegen(platz);
+					selektierte.add(platz);
 				}
 			}
-			_ui.getPreisLabel().setText("Gesamtpreis: " + preis + " Eurocent");
-		} else {
-			_ui.getPlatzplan().setAnzahlPlaetze(0, 0);
-		}
+			reagiereAufNeuePlatzAuswahl(selektierte);
+		} 
+//		else {
+//			_ui.getPlatzplan().setAnzahlPlaetze(0, 0, _vorstellung);
+//		}
+		
+		
 	}
 
 	/**
