@@ -145,6 +145,7 @@ class Platzplan extends GridPane
 		assert anzahlSitzeProReihe >= 0
 				: "Vorbedingung verletzt: anzahlSitzeProReihe >= 0";
 
+		_vorstellung = vorstellung;
 		// Alle vorhandenen Buttons etc. entfernen
 		getChildren().clear();
 		getColumnConstraints().clear();

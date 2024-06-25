@@ -11,7 +11,7 @@
 //		Geldbetrag betrag = Geldbetrag.get(100);
 //        assertEquals(1, betrag.getEuroAnteil());
 //        assertEquals(0, betrag.getCentAnteil());
-//        assertEquals("1,00", betrag.getFormatiertenString());
+//        assertEquals(" 1,00", betrag.getFormatiertenString());
 //
 //        betrag = Geldbetrag.get(0);
 //        assertEquals(0, betrag.getEuroAnteil());

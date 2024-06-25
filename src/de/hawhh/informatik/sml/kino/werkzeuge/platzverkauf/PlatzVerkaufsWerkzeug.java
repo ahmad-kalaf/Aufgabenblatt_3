@@ -146,8 +146,6 @@ public class PlatzVerkaufsWerkzeug {
 //		else {
 //			_ui.getPlatzplan().setAnzahlPlaetze(0, 0, _vorstellung);
 //		}
-		
-		
 	}
 
 	/**

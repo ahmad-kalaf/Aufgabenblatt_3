@@ -252,6 +252,7 @@ public class Vorstellung
 				: "Vorbedingung verletzt: istPlatzVerkauft(platz)";
 
 		_verkauft[platz.getReihenNr()][platz.getSitzNr()] = false;
+		deselektiere(platz);
 		_anzahlVerkauftePlaetze--;
 	}
 
@@ -396,10 +397,6 @@ public class Vorstellung
 		_selektiert[platz.getReihenNr()][platz.getSitzNr()] = false;
 	}
 
-	public boolean[][] getSelektierte()
-	{
-		return _selektiert;
-	}
 
 	public boolean istPlatzSelektiert(Platz platz)
 	{
